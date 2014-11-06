@@ -15,7 +15,7 @@ class Binarization:
                 if p > 128:
                     p = 1
                 else:
-                    p = 200
+                    p = 0
                 tmp.append(p)
             binaryImg.append(tmp)
         return binaryImg

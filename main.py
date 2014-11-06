@@ -4,6 +4,8 @@ __author__ = 'anton'
 from PIL import Image
 from Binarization import Binarization
 from Skeletonization import Skeletonization
+from ExtractPoints import ExtractPoints
+from DeleteNoise import DeleteNoise
 
 def getImage():
     imagePath = "../img/img1.png"
@@ -21,16 +23,25 @@ def showImage(bImg):
 
 def main():
     img = getImage()
-    img.show()
 
-    binaryAlg = Binarization(img)
-    binaryImg = binaryAlg.getBinaryImg()
-    showImage(binaryImg)
-
+    #binaryAlg = Binarization(img)
+    #binaryImg = binaryAlg.getBinaryImg()
     #skeletonAlg = Skeletonization(binaryImg)
     #print(skeletonAlg.getSkeletonImg())
 
-    pass
+    skeletonResult = Skeletonization.defSkeletonResult
+    for i in range(len(skeletonResult)):
+        for j in range(len(skeletonResult[0])):
+            if (skeletonResult[i][j] == 1):
+                skeletonResult[i][j] = 200
+    #showImage(skeletonResult)
+
+    extractPoints = ExtractPoints(skeletonResult)
+    extractPoints.getBranchAndEndPoints()
+
+    deleteNoise = DeleteNoise(extractPoints.branchPoints, extractPoints.endPoints)
+    deleteNoise.execute()
+
 
 if __name__ == "__main__":
     main()
